@@ -36,12 +36,18 @@ if __name__ == "__main__":
 
                     lastReadingNum = -1
 
+                    results_file = open("results.txt", "a")
+
                     header = True
                     while peripheral.is_connected():
                         if header:
+
                             print("-------------Mass -----------    ------------- Number --------------   -Average-")
                             print("     Concentration [μg/m3]             Concentration [#/cm3]             [μm]")
                             print("Reading #\tP1.0\tP2.5\tP4.0\tP10\t\tP0.5\tP1.0\tP2.5\tP4.0\tP10\t\tPartSize")
+                            results_file.write("-------------Mass -----------    ------------- Number --------------   -Average-")
+                            results_file.write("     Concentration [μg/m3]             Concentration [#/cm3]             [μm]")
+                            results_file.write("Reading #\tP1.0\tP2.5\tP4.0\tP10\t\tP0.5\tP1.0\tP2.5\tP4.0\tP10\t\tPartSize")
                             header = False
 
                         ReadingNum = unpack("i", peripheral.read(ServiceUUID, ReadingNumCharUUID))[0]
@@ -63,3 +69,6 @@ if __name__ == "__main__":
                         PartSize = unpack("f", peripheral.read(ServiceUUID, PartSizeCharUUID))[0]
 
                         print(f"{ReadingNum}\t\t\t{MassPM1:.2f}\t{MassPM2:.2f}\t{MassPM4:.2f}\t{MassPM10:.2f}\t{NumPM0:.2f}\t{NumPM1:.2f}\t{NumPM2:.2f}\t{NumPM4:.2f}\t{NumPM10:.2f}\t{PartSize:.2f}")
+                        results_file.write(f"{ReadingNum}\t\t\t{MassPM1:.2f}\t{MassPM2:.2f}\t{MassPM4:.2f}\t{MassPM10:.2f}\t{NumPM0:.2f}\t{NumPM1:.2f}\t{NumPM2:.2f}\t{NumPM4:.2f}\t{NumPM10:.2f}\t{PartSize:.2f}")
+
+                    results_file.close()
